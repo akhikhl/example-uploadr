@@ -1,0 +1,44 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'war'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.akhikhl.gretty:gretty:1.1.4"
+    }
+}
+
+apply plugin: "org.akhikhl.gretty"
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "org.spockframework:spock-core:0.6-groovy-1.8"
+    testCompile 'org.codehaus.groovy:groovy-all:1.8.6'
+
+    providedCompile 'javax.servlet:javax.servlet-api'
+
+    compile 'net.minidev:json-smart:1.2'
+
+    runtime 'org.slf4j:slf4j-api:1.7.7' // Same as Gretty 1.0
+
+    // This appears to fix slf4j problems but I don't understand why
+    // https://github.com/akhikhl/gretty/issues/31
+    runtime 'ch.qos.logback:logback-classic:1.1.2' 
+
+    compile('com.sharneng:gm4java:1.1.0') {
+        exclude module: 'slf4j-api'
+    }
+}
+
+gretty {
+    port = 8880
+    contextPath = '/uploadr-1.0'
+}
